@@ -5,7 +5,7 @@
         class="card-title"
         :class="darkMode ? 'text-light':''"
       >Visar entrada</div>
-      <form @submit.prevent="postEntrada()">
+      <form @submit.prevent="empezarEntrada()">
         <div class="form-group">
           <label
             for="motivo"
@@ -53,14 +53,14 @@ export default {
     }
   },
   methods: {
-    postEntrada () {
+    empezarEntrada () {
       const params = {
         motivo_entrada: this.motivo
       }
 
       axios.post('/visado', params)
         .then(res => {
-          console.log(res.data);
+          this.$emit('entradaEvent')
         })
     }
   },

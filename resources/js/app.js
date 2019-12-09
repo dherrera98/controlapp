@@ -20,9 +20,9 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('visar-entrada-component', require('./components/VisarEntradaComponent.vue').default);
-Vue.component('visar-salida-component', require('./components/VisarSalidaComponent.vue').default);
 Vue.component('footer-component', require('./components/FooterComponent.vue').default);
+Vue.component('visado-view', require('./views/Visado.vue').default);
+Vue.component('registro-view', require('./views/Registro.vue').default);
 Vue.component('change-theme-component', require('./components/ChangeThemeComponent.vue').default);
 
 /**

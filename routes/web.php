@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/visado', 'VisadoController')->middleware('auth');
+Route::resource('/registro', 'RegistroController')->middleware('auth');

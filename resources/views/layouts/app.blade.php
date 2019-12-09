@@ -76,6 +76,8 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <footer-component/>
     </div>
 <script type="module">
 import EventBus from '../../js/event-bus.js'

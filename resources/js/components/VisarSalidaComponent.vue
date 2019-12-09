@@ -5,7 +5,7 @@
         class="card-title"
         :class="darkMode ? 'text-light':''"
       >Visar salida</div>
-      <form>
+      <form @submit.prevent="terminarVisado()">
         <div class="form-group">
           <label
             for="motivo"
@@ -36,6 +36,7 @@
 <script>
 import EventBus from "../event-bus"
 export default {
+  props:["visado"],
   data () {
     return {
       motivo: "",
@@ -50,6 +51,17 @@ export default {
       if (newValue && newValue.toLowerCase() != oldValue.toLowerCase()) {
         this.motivo = newValue.charAt(0).toUpperCase() + this.motivo.slice(1)
       }
+    }
+  },
+  methods: {
+    terminarVisado() {
+      const params = {
+        motivo_salida : this.motivo
+      }
+
+      axios.put(`/visado/1`, params)
+        .then(res => this.$emit('salidaEvent'))
+        .catch(err => console.log(err))
     }
   },
 }

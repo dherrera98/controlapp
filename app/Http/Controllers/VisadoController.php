@@ -19,7 +19,10 @@ class VisadoController extends Controller
     {
 
         if($request->ajax()){
-            return Visados::where('user_id', auth()->id())->get();
+            return Visados::where([['user_id',auth()->id()],['terminado',false]])
+            ->orderBy('updated_at')
+            ->take(1)
+            ->get();
         }else{
             return view('welcome');
         }
@@ -52,6 +55,7 @@ class VisadoController extends Controller
         $visado_entrada->save();
 
         $visado->visado_entradas = $visado_entrada->id;
+        $visado->terminado = false;
         $visado->user_id  = auth()->id();
         $visado->save();
 
@@ -91,19 +95,16 @@ class VisadoController extends Controller
     {
         $visado_salida = new Visado_salida();
         
-        $visado = Visados::where('id_user',auth()->id())
-                    ->orderBy('updated_at')
-                    ->where('terminado', true)
-                    ->take(1)
-                    ->get();
-
-        $visado = new Visados();
+        $id_visado = Visados::where([['user_id',auth()->id()],['terminado',false]])
+            ->orderBy('updated_at')
+            ->take(1)
+            ->get('id');
 
         $visado_salida->fecha_salida = now();
         $visado_salida->ip_salida = $_SERVER['REMOTE_ADDR'];
         $visado_salida->motivo_salida = $request->motivo_salida;
         $visado_salida->save();
-
+        $visado = Visados::find($id_visado[0]->id);
         $visado->visado_salidas = $visado_salida->id;
         $visado->terminado = true;
         $visado->save();

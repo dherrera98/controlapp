@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Hi</div>
-
+                    <registro-view/>
                 <div class="card-body">
                 </div>
             </div>
