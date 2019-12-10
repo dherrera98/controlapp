@@ -3,9 +3,9 @@
             <thead>
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Salida visada</th>
+                <th scope="col">Entrada visada</th>
+                <th scope="col">Terminado</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,10 +35,15 @@
         mounted () {
             this.cargarDatos();
         },
+        data() {
+            return {
+                datos: ""
+            }
+        },
         methods: {
             cargarDatos() {
-                axios.get("/registro")
-                    .then(res => console.log(res.data))
+                axios.get("api/registro")
+                    .then(res => this.datos = res.data)
             }
         },
     }

@@ -39,7 +39,11 @@ export default {
   data () {
     return {
       motivo: "",
-      darkMode: false
+      darkMode: false,
+      mensajes: {
+        correcto: "",
+        error: ""
+      }
     }
   },
   created () {
@@ -58,10 +62,13 @@ export default {
         motivo_entrada: this.motivo
       }
 
-      axios.post('/visado', params)
+      axios.post('api/visado', params)
         .then(res => {
-          this.$emit('entradaEvent')
+          this.$emit('entradaEvent', "Se ha visado la entrada correctamente!!")
         })
+        .catch(err => {
+          this.$emit('entradaEvent', "Error al visar la entrada!!")
+          })
     }
   },
 }

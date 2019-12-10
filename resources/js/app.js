@@ -23,6 +23,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('visado-view', require('./views/Visado.vue').default);
 Vue.component('registro-view', require('./views/Registro.vue').default);
+Vue.component('administracion-view', require('./views/Administracion.vue').default);
 Vue.component('change-theme-component', require('./components/ChangeThemeComponent.vue').default);
 
 /**

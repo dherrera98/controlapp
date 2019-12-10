@@ -4,21 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User; 
-use App\Visados;
-use App\Visado_entrada;
-use App\Visado_salida;
-class RegistroController extends Controller
+
+
+class AdministracionController extends Controller
 {
-    /**
+        /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
     {
 
         if($request->ajax()){
-            return User::get();
+            return 'holaaa';
         }else{
             return view('welcome');
         }
@@ -42,7 +42,7 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -76,12 +76,7 @@ class RegistroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $User = new User();
-        $User = User::find($id);
-        $User->esAdmin = !$User.esAdmin;
-        $User->save();
-
-        return $User;
+        
     }
 
     /**

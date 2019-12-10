@@ -40,7 +40,11 @@ export default {
   data () {
     return {
       motivo: "",
-      darkMode: false
+      darkMode: false,
+      mensajes:{
+        correcto:"",
+        error:""
+      }
     }
   },
   created () {
@@ -59,9 +63,18 @@ export default {
         motivo_salida : this.motivo
       }
 
-      axios.put(`/visado/1`, params)
-        .then(res => this.$emit('salidaEvent'))
-        .catch(err => console.log(err))
+      axios.put(`api/visado/1`, params)
+      .then(res => {
+          this.mensajes.correcto = "Se ha visado la salida correctamente!!"
+          this.mensajes.error = ""
+
+          this.$emit('salidaEvent', this.mensajes)
+        })
+        .catch(err => {
+            this.mensajes.correcto = ""
+            this.mensajes.error = "Error al visar la salida!!"
+            this.$emit('salidaEvent', this.mensajes)
+          })
     }
   },
 }

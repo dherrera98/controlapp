@@ -1,7 +1,7 @@
 <template>
-  <footer :class="darkMode ? 'bg-dark':'bg-light'">
-    <p :class="darkMode ? 'text-light':'text-dark'">
-      Laravel + Vuejs = ControlApp 💚
+  <footer>
+    <p class="text-dark">
+      Laravel + Vuejs = ControlAPP 💚
     </p>
   </footer>
 </template>

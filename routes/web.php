@@ -15,8 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/visado', function () {
+    return view('visado');
+})->middleware('auth');
+
+Route::get('/registro', function () {
+    return view('registro');
+})->middleware('auth');
+
+Route::get('/administracion', function(){
+    return view('administracion');
+})->middleware('auth');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/visado', 'VisadoController')->middleware('auth');
-Route::resource('/registro', 'RegistroController')->middleware('auth');
+Route::resource('api/visado', 'VisadoController')->middleware('auth');
+Route::resource('api/registro', 'RegistroController')->middleware('auth');
+Route::resource('api/administracion', 'RegistroController')->middleware('auth');
