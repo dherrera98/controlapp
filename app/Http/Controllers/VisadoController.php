@@ -130,7 +130,7 @@ class VisadoController extends Controller
                 return $visado;
             }
 
-            return response()->json(['error' => $hora_actual], 400);
+            return response()->json(['error' => 'El campo motivo de salida es obligatorio'], 400);
         }
     }
 
