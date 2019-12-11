@@ -6,11 +6,13 @@
 
 require('./bootstrap');
 import Notifications from 'vue-notification'
-
+import Toasted from 'vue-toasted';
+ 
 
 
 
 window.Vue = require('vue');
+Vue.use(Toasted, {duration:2000})
 Vue.use(Notifications)
  
 /**

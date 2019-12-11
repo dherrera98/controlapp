@@ -60,12 +60,12 @@ export default {
       axios.post('api/visado', params)
         .then(res => {
           this.$emit('entradaEvent')
-          this.$notify('text')
+          this.$toasted.show('Entrada visada!');
         })
         .catch(err => {
           this.$emit('entradaEvent')
-          this.$notify('text')
-          })
+          this.$toasted.show('Error al visar la entrada!');
+  })
     }
   },
 }

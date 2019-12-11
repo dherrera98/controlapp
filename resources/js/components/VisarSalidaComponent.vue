@@ -64,9 +64,11 @@ export default {
       axios.put(`api/visado/1`, params)
       .then(res => {
           this.$emit('salidaEvent')
+          this.$toasted.show('Salida visada!');
         })
         .catch(err => {
             this.$emit('salidaEvent')
+            this.$toasted.show('Error al visar la salida.');
           })
     },
     convertirTiempo(date){
