@@ -48,12 +48,14 @@ class VisadoController extends Controller
     {
             $visado_entrada = new Visado_entrada();
             $visado = new Visados();
-    
+
+            // guardamos visado de entrada en la  base de datos
             $visado_entrada->fecha_entrada = now();
             $visado_entrada->ip_entrada = $_SERVER['REMOTE_ADDR'];
             $visado_entrada->motivo_entrada = $request->motivo_entrada;
             $visado_entrada->save();
-    
+            
+            // guardamos visado en base de la base de datos
             $visado->visado_entradas = $visado_entrada->id;
             $visado->terminado = false;
             $visado->user_id  = auth()->id();
@@ -103,10 +105,9 @@ class VisadoController extends Controller
         $hora_fichada = now($visado->create_at);
         $hora_limite = $hora_fichada->addHour($ajustes->horasTrabajo);
         $hora_actual = now()->addhour(1);
-        $hora_actual_mas10 = $hora_actual->addMinute(10);
-        $hora_actual_meno10 = $hora_actual->subMinute(10);
 
-        if($hora_actual->addMinute(10) > $hora_limite && $hora_actual->subMinute(10) < $hora_limite){
+        // comprobamos que la hora actual esta +-10 min en la hora limite
+        if($hora_actual < $hora_limite->addMinute(10) && $hora_actual > $hora_limite->subMinute(10)){
             $visado_salida = new Visado_salida();
             $visado_salida->fecha_salida = now();
             $visado_salida->ip_salida = $_SERVER['REMOTE_ADDR'];
@@ -128,7 +129,7 @@ class VisadoController extends Controller
                 $visado->save();
                 return $visado;
             }
-         
+
             return response()->json(['error' => $hora_actual], 400);
         }
     }
