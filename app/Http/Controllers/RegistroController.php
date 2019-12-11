@@ -18,7 +18,10 @@ class RegistroController extends Controller
     {
 
         if($request->ajax()){
-            return User::get();
+            return Visados::with('visado_entrada','visado_salida')
+            ->where("user_id", auth()->id())
+            ->orderBy('updated_at', 'DESC')
+            ->get();
         }else{
             return view('welcome');
         }

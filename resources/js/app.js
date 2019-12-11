@@ -5,9 +5,14 @@
  */
 
 require('./bootstrap');
+import Notifications from 'vue-notification'
+
+
+
 
 window.Vue = require('vue');
-
+Vue.use(Notifications)
+ 
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -24,7 +29,6 @@ Vue.component('footer-component', require('./components/FooterComponent.vue').de
 Vue.component('visado-view', require('./views/Visado.vue').default);
 Vue.component('registro-view', require('./views/Registro.vue').default);
 Vue.component('administracion-view', require('./views/Administracion.vue').default);
-Vue.component('change-theme-component', require('./components/ChangeThemeComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

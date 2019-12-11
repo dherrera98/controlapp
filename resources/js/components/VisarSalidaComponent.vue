@@ -1,16 +1,20 @@
 <template>
-  <div :class="['card', 'card-container', darkMode ? 'bg-dark':'']">
+  <div class="card card-container">
     <div class="card-body">
       <div
         class="card-title"
-        :class="darkMode ? 'text-light':''"
       >Visar salida</div>
+      <div>
+        <p>
+          <span><strong>Entrada visada a las:</strong> {{convertirTiempo(visado.visado_entrada.fecha_entrada)}}</span> <br>
+          <span v-if="visado.visado_entrada.motivo_entrada"><strong>Con motivo de entrada:</strong> {{visado.visado_entrada.motivo_entrada}}</span>
+        </p>
+      </div>
       <form @submit.prevent="terminarVisado()">
         <div class="form-group">
           <label
             for="motivo"
-            :class="darkMode ? 'text-light':''"
-          >Motivo</label>
+          >Motivo de salida</label>
           <input
             type="text"
             class="form-control"
@@ -19,9 +23,8 @@
           >
           <small
             id="emailHelp"
-            class="form-text text-muted"
-            :class="[darkMode ? 'text-light':'', 'card-note']"
-          ><span>Nota:</span> el motivo es opcional.</small>
+            class="form-text text-muted card-note"
+          ><strong>Nota:</strong> el motivo es obligatorio si no se sale a tu hora.</small>
         </div>
         <button
           type="submit"
@@ -34,21 +37,16 @@
 </template>
 
 <script>
-import EventBus from "../event-bus"
 export default {
   props:["visado"],
   data () {
     return {
       motivo: "",
-      darkMode: false,
       mensajes:{
         correcto:"",
         error:""
       }
     }
-  },
-  created () {
-    EventBus.$on("changeTheme", (theme) => this.darkMode = theme)
   },
   watch: {
     motivo (newValue, oldValue) {
@@ -65,16 +63,16 @@ export default {
 
       axios.put(`api/visado/1`, params)
       .then(res => {
-          this.mensajes.correcto = "Se ha visado la salida correctamente!!"
-          this.mensajes.error = ""
-
-          this.$emit('salidaEvent', this.mensajes)
+          this.$emit('salidaEvent')
         })
         .catch(err => {
-            this.mensajes.correcto = ""
-            this.mensajes.error = "Error al visar la salida!!"
-            this.$emit('salidaEvent', this.mensajes)
+            this.$emit('salidaEvent')
           })
+    },
+    convertirTiempo(date){
+      const tiempo = new Date(date);
+
+      return `${tiempo.getHours()}:${tiempo.getMinutes()}`;
     }
   },
 }

@@ -1,5 +1,10 @@
 <template>
     <div>
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-4">Registro</h1>
+            </div>
+        </div>
         <TablaRegistroComponent/>
     </div>
 </template>

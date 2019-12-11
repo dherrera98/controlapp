@@ -69,6 +69,9 @@
                             </li>
                             <li><a href="/visado" class="nav-link">Visado</a></li>
                             <li><a href="/registro" class="nav-link">Registro</a></li>
+                            @if (Auth::user()->esAdmin == 1)
+                            <li><a class="nav-link text-danger" href="/administracion">Administracion</a></li>
+                            @endif
                         @endguest
                     </ul>
                 </div>
@@ -81,9 +84,5 @@
 
         <footer-component/>
     </div>
-<script type="module">
-import EventBus from '../../js/event-bus.js'
-    EventBus.$on("changeTheme", (theme) => console.log("cambio"))
-</script>
 </body>
 </html>

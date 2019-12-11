@@ -7,8 +7,8 @@
             </div>
         </div>
         <div class="visado-container">
-            <VisarEntradaComponent v-if="visado==null" @entradaEvent="getVisado(msj)" />
-            <VisarSalidaComponent :visado="visado" v-else @salidaEvent="getVisado(msj)" />
+            <VisarEntradaComponent v-if="visado==null" @entradaEvent="getVisado()" />
+            <VisarSalidaComponent :visado="visado" v-else @salidaEvent="getVisado()" />
         </div>
         <transition name="fade">
             <div class="alert alert-success notificacion" v-if="mensaje" role="alert">
@@ -40,15 +40,12 @@
         },
 
         methods: {
-            getVisado(msj) {
+            getVisado() {
                 axios.get("api/visado")
                     .then(res => {
                         console.log(res.data)
                         this.visado = res.data[0]
                     })
-                if(msj){
-                    this.mensaje = msj;
-                }
             },
             cerrar(){
                 this.mensaje = ""

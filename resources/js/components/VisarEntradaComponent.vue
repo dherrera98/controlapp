@@ -10,7 +10,7 @@
           <label
             for="motivo"
             :class="darkMode ? 'text-light':''"
-          >Motivo</label>
+          >Motivo de entrada</label>
           <input
             type="text"
             class="form-control"
@@ -27,14 +27,12 @@
           type="submit"
           class="btn btn-primary btn-block"
         >Visar entrada</button>
-
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import EventBus from "../event-bus"
 export default {
   data () {
     return {
@@ -45,9 +43,6 @@ export default {
         error: ""
       }
     }
-  },
-  created () {
-    EventBus.$on("changeTheme", (theme) => this.darkMode = theme)
   },
   watch: {
     motivo (newValue, oldValue) {
@@ -64,10 +59,12 @@ export default {
 
       axios.post('api/visado', params)
         .then(res => {
-          this.$emit('entradaEvent', "Se ha visado la entrada correctamente!!")
+          this.$emit('entradaEvent')
+          this.$notify('text')
         })
         .catch(err => {
-          this.$emit('entradaEvent', "Error al visar la entrada!!")
+          this.$emit('entradaEvent')
+          this.$notify('text')
           })
     }
   },

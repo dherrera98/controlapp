@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVisadoEntradasTable extends Migration
+class Ajustes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateVisadoEntradasTable extends Migration
      */
     public function up()
     {
-        Schema::create('visado_entradas', function (Blueprint $table) {
+        Schema::create('ajustes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('fecha_entrada');
-            $table->string('motivo_entrada')->nullable();
-            $table->ipAddress('ip_entrada');
+            $table->integer('horasTrabajo');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateVisadoEntradasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('visado_entradas');
+        Schema::dropIfExists('ajustes');
     }
 }

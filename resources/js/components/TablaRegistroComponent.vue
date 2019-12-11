@@ -3,28 +3,22 @@
             <thead>
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">Salida visada</th>
-                <th scope="col">Entrada visada</th>
-                <th scope="col">Terminado</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora entrada</th>
+                <th scope="col">Motivo entrada</th>
+                <th scope="col">Hora salida</th>
+                <th scope="col">Motivo Salida</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody v-for="dato in datos" :key="dato.id">
                 <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+                <th scope="row">{{dato.id}}</th>
+                <td>{{convertirFecha(dato.created_at)}}</td>
+                <td>{{convertirFechaEnHoras(dato.visado_entrada.fecha_entrada)}}</td>
+                <td>{{dato.visado_entrada.motivo_entrada}}</td>
+                <td v-if="dato.visado_salida == null" colspan="2">Salida no registrada</td>
+                <td v-if="dato.visado_salida != null">{{convertirFechaEnHoras(dato.visado_salida.fecha_salida)}}</td>
+                <td v-if="dato.visado_salida != null">{{dato.visado_salida.motivo_salida || "Sin motivos"}}</td>
                 </tr>
             </tbody>
         </table>
@@ -44,6 +38,14 @@
             cargarDatos() {
                 axios.get("api/registro")
                     .then(res => this.datos = res.data)
+            },
+            convertirFechaEnHoras(date){
+                let fecha = new Date(date)
+                return `${fecha.getHours()}:${fecha.getMinutes()}`
+            },
+            convertirFecha(date){
+                let fecha = new Date(date)
+                return `${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`
             }
         },
     }

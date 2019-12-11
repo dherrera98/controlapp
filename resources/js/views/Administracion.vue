@@ -1,25 +1,36 @@
 <template>
 <div>
-  <div class="list-group">
-    <ul v-for="usuario in usuarios" :key="usuario.id">
-      <li>{{usuario.id}}</li>
-    </ul>
+  <div class="jumbotron">
+    <div class="container">
+        <h1 class="display-4">Panel de Administracion</h1>
+    </div>
+  </div>
+  <ModalInfoUser :usuarioId="usuarioId" v-if="abrirModal" @cerrarModal="abrirModal=false"></ModalInfoUser>
+  <div class="list-group" v-for="usuario in usuarios" :key="usuario.id">
+      <button type="button" class="list-group-item list-group-item-action" @click="usuarioId = usuario.id; abrirModal=true">{{usuario.name}}</button>
   </div>
 </div>
 </template>
 
 <script>
+  import ModalInfoUser from "../components/ModalInfoUser";
   export default {
+    components: {
+      ModalInfoUser,
+    },
     beforeCreate () {
       axios.get("/api/administracion")
         .then(res => this.usuarios = res.data);
+
+      axios.get("/api/administracion/ajustes")
+        .then(res => this.ajustes = res.data)
     },
     data() {
       return {
-        usuarios: [
-          {"id":1,"name":"David Manuel Herrera Rodríguez","email":"nuclearodin9@gmail.com","esAdmin":0,"email_verified_at":null,"created_at":"2019-12-10 11:54:40","updated_at":"2019-12-10 11:54:40"},
-          {"id":2,"name":"prueba","email":"asdf1234@gmail.com","esAdmin":0,"email_verified_at":null,"created_at":"2019-12-10 13:20:51","updated_at":"2019-12-10 13:20:51"}
-          ]
+        usuarios: [],
+        usuarioId: 0,
+        abrirModal: false,
+        ajustes: null
       }
     },
   }

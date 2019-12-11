@@ -16,7 +16,7 @@ class CreateVisadoSalidasTable extends Migration
         Schema::create('visado_salidas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamp('fecha_salida');
-            $table->string('motivo_salida');
+            $table->string('motivo_salida')->nullable();
             $table->ipAddress('ip_salida');
             $table->timestamps();
         });

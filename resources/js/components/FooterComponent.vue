@@ -7,15 +7,11 @@
 </template>
 
 <script>
-import EventBus from "../event-bus"
 export default {
   data () {
     return {
       darkMode: false
     }
-  },
-  created () {
-    EventBus.$on("changeTheme", (theme) => this.darkMode = theme)
   },
 }
 </script>

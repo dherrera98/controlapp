@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User; 
-use App\Visados;
+use App\Ajustes;
 
-class AdministracionController extends Controller
+class AjustesController extends Controller
 {
-        /**
+       /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -16,17 +15,12 @@ class AdministracionController extends Controller
 
     public function index(Request $request)
     {
+        $esAdmin = User::find(1)->esAdmin;
 
-        if($request->ajax()){
-            $esAdmin = User::find(1)->esAdmin;
-
-            if($esAdmin == 1){
-                return User::get();
-            }else{
-                return response()->json(['error' => 'Unauthenticated.'], 401);
-            }
+        if($esAdmin == 1){
+            return Ajustes::first().get();
         }else{
-            return view('welcome');
+            return response()->json(['error' => 'Unauthenticated.'], 401);
         }
     }
     
@@ -60,16 +54,7 @@ class AdministracionController extends Controller
      */
     public function show($id)
     {
-            $esAdmin = User::find(1)->esAdmin;
-
-            if($esAdmin == 1){
-                return Visados::with("Visado_salida", "Visado_entrada")
-                    ->where("user_id",$id)
-                    ->orderBy('updated_at', 'DESC')
-                    ->get();
-            }else{
-                return response()->json(['error' => 'Unauthenticated.'], 401);
-            }
+        //
     }
 
     /**
@@ -92,11 +77,17 @@ class AdministracionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $User = User::find($id);
-        $User->esAdmin = !$User.esAdmin;
-        $User->save();
+        $esAdmin = User::find(1)->esAdmin;
 
-        return $User;
+            if($esAdmin == 1){
+                $Ajustes = Ajustes::firstOrFail();
+                $Ajustes->horasTrabajo=$request->horasTrabajo;
+                $Ajustes->save();
+
+                return $Ajustes;
+            }else{
+                return response()->json(['error' => 'Unauthenticated.'], 401);
+            }
     }
 
     /**

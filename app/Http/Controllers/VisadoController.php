@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Visados;
 use App\Visado_entrada;
 use App\Visado_salida;
-
+use App\Ajustes;
 
 class VisadoController extends Controller
 {
@@ -19,7 +19,7 @@ class VisadoController extends Controller
     {
 
         if($request->ajax()){
-            return Visados::where([['user_id',auth()->id()],['terminado',false]])
+            return Visados::with('visado_entrada')->where([['user_id',auth()->id()],['terminado',false]])
             ->orderBy('updated_at')
             ->take(1)
             ->get();
@@ -46,20 +46,20 @@ class VisadoController extends Controller
      */
     public function store(Request $request)
     {
-        $visado_entrada = new Visado_entrada();
-        $visado = new Visados();
-
-        $visado_entrada->fecha_entrada = now();
-        $visado_entrada->ip_entrada = $_SERVER['REMOTE_ADDR'];
-        $visado_entrada->motivo_entrada = $request->motivo_entrada;
-        $visado_entrada->save();
-
-        $visado->visado_entradas = $visado_entrada->id;
-        $visado->terminado = false;
-        $visado->user_id  = auth()->id();
-        $visado->save();
-
-        return $visado_entrada;
+            $visado_entrada = new Visado_entrada();
+            $visado = new Visados();
+    
+            $visado_entrada->fecha_entrada = now();
+            $visado_entrada->ip_entrada = $_SERVER['REMOTE_ADDR'];
+            $visado_entrada->motivo_entrada = $request->motivo_entrada;
+            $visado_entrada->save();
+    
+            $visado->visado_entradas = $visado_entrada->id;
+            $visado->terminado = false;
+            $visado->user_id  = auth()->id();
+            $visado->save();
+    
+            return $visado_entrada;
     }
 
     /**
@@ -93,23 +93,44 @@ class VisadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $visado_salida = new Visado_salida();
-        
+        $ajustes = Ajustes::first();
         $id_visado = Visados::where([['user_id',auth()->id()],['terminado',false]])
             ->orderBy('updated_at')
             ->take(1)
             ->get('id');
-
-        $visado_salida->fecha_salida = now();
-        $visado_salida->ip_salida = $_SERVER['REMOTE_ADDR'];
-        $visado_salida->motivo_salida = $request->motivo_salida;
-        $visado_salida->save();
+        
         $visado = Visados::find($id_visado[0]->id);
-        $visado->visado_salidas = $visado_salida->id;
-        $visado->terminado = true;
-        $visado->save();
+        $hora_fichada = now($visado->create_at);
+        $hora_limite = $hora_fichada->addHour($ajustes->horasTrabajo);
+        $hora_actual = now()->addhour(1);
+        $hora_actual_mas10 = $hora_actual->addMinute(10);
+        $hora_actual_meno10 = $hora_actual->subMinute(10);
 
-        return $visado_salida;
+        if($hora_actual->addMinute(10) > $hora_limite && $hora_actual->subMinute(10) < $hora_limite){
+            $visado_salida = new Visado_salida();
+            $visado_salida->fecha_salida = now();
+            $visado_salida->ip_salida = $_SERVER['REMOTE_ADDR'];
+            $visado_salida->motivo_salida = $request->motivo_salida;
+            $visado_salida->save();
+            $visado->visado_salidas = $visado_salida->id;
+            $visado->terminado = true;
+            $visado->save();
+            return visado;
+        }else{
+            if($request->motivo_salida){
+                $visado_salida = new Visado_salida();
+                $visado_salida->fecha_salida = now();
+                $visado_salida->ip_salida = $_SERVER['REMOTE_ADDR'];
+                $visado_salida->motivo_salida = $request->motivo_salida;
+                $visado_salida->save();
+                $visado->visado_salidas = $visado_salida->id;
+                $visado->terminado = true;
+                $visado->save();
+                return $visado;
+            }
+         
+            return response()->json(['error' => $hora_actual], 400);
+        }
     }
 
     /**
