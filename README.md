@@ -17,10 +17,10 @@ composer install
 - Añadimo la configuracion de la base de datos al archivo .env
 - Añadir migraciones a la base de datos:
 ``
-php artisan make:migrations
+php artisan migrate
 ``
 - Creamos un nuevo registro en la tabla ajustes con las horas
 - Ejecutamos el servidor en dos terminales diferentes, ejecutando en cada una:
 ``
-php composer serve
+php artisan serve
 ``
